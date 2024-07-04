@@ -16,6 +16,15 @@
 #include <assert.h>
 #include <sys/sendfile.h>
 #include <stdlib.h>
+#include <ctype.h>
+#include <pthread.h>
+
+struct FdInfo
+{
+    int _fd;
+    int _epfd;
+    pthread_t tid;
+};
 // 初始化监听
 int initListenFD(unsigned short port)
 {
@@ -122,18 +131,22 @@ int epollRun(int lfd)
         // 遍历就绪的事件
         for (int i = 0; i < num; i++)
         {
+            struct FdInfo *info = (struct FdInfo *)malloc(sizeof(struct FdInfo));
+            assert(info != NULL);
             int fd = evs[i].data.fd;
+            info->_fd = fd;
+            info->_epfd = epfd;
             // 如果当前fd是用于监听的文件描述符
             if (fd == lfd)
             {
                 // 建立新连接（事件已经发生 不会阻塞）
-                acceptClient(lfd, epfd);
+                pthread_create(&info->tid, NULL, acceptClient, info);
             }
             // 用于通信
             else
             {
                 // 主要是接受对端数据（读数据）
-                recvHttpRequest(fd, epfd);
+                pthread_create(&info->tid, NULL, recvHttpRequest, info);
             }
         }
     }
@@ -142,15 +155,17 @@ int epollRun(int lfd)
 /*-----------------------------------------------------------------------------------------*/
 
 // 和客户端建立连接
-int acceptClient(int lfd, int epfd)
+// int acceptClient(int lfd, int epfd)
+void* acceptClient(void *arg)
 {
+    struct FdInfo *info = (struct FdInfo *)arg;
     // 1.建立连接
     // 第23个参数为传出参数用于保存客户端的ip跟port信息
-    int cfd = accept(lfd, NULL, NULL);
+    int cfd = accept(info->_fd, NULL, NULL);
     if (cfd == -1)
     {
         perror("accept");
-        return -1;
+        return NULL;
     }
 
     // 2.设置非阻塞
@@ -170,23 +185,27 @@ int acceptClient(int lfd, int epfd)
     ev.data.fd = cfd;
     // 检测读事件就绪(读事件|边缘触发事件)
     ev.events = EPOLLIN | EPOLLET;
-    int ret = epoll_ctl(epfd, EPOLL_CTL_ADD, cfd, &ev);
+    int ret = epoll_ctl(info->_epfd, EPOLL_CTL_ADD, cfd, &ev);
     if (ret == -1)
     {
         perror("epoll_ctl");
-        return -1;
+        return NULL;
     }
+    printf("acceptClient tid:%ld\n", info->tid);
+    free(info);
 }
 
 /*------------------------------------------------------------------------------------------*/
 
 // 接http请求
-int recvHttpRequest(int cfd, int epfd)
+// int recvHttpRequest(int cfd, int epfd)
+void *recvHttpRequest(void *arg)
 {
+    struct FdInfo *info = (struct FdInfo *)arg;
     int len = 0, totle = 0;
     char tmp[1024] = {0};
     char buffer[4096] = {0};
-    while ((len = recv(cfd, tmp, sizeof tmp, 0)) > 0)
+    while ((len = recv(info->_fd, tmp, sizeof tmp, 0)) > 0)
     {
         if (totle + len < sizeof buffer)
         {
@@ -200,18 +219,20 @@ int recvHttpRequest(int cfd, int epfd)
         char *pt = strstr(buffer, "\r\n");
         int pos = pt - buffer;
         buffer[pos] = '\0';
-        parseRequestLine(buffer, cfd);
+        parseRequestLine(buffer, info->_fd);
     }
     else if (len == 0)
     {
         // 客户端断开连接
-        epoll_ctl(epfd, EPOLL_CTL_DEL, cfd, NULL);
-        close(cfd);
+        epoll_ctl(info->_epfd, EPOLL_CTL_DEL, info->_fd, NULL);
+        close(info->_fd);
     }
     else
     {
         perror("recv");
     }
+    printf("recvHttpRequest tid:%ld\n", info->tid);
+    free(info);
     return 0;
 }
 /*------------------------------------------------------------------------------------------*/
@@ -221,6 +242,7 @@ int parseRequestLine(const char *line, int cfd)
 {
     char method[12];
     char path[1024];
+    decodeMsg(path, path);
     // 分割请求头
     sscanf(line, "%[^ ] %[^ ]", method, path);
     // 只解析get请求
@@ -385,7 +407,7 @@ int sendFile(const char *namefile, int cfd)
     off_t offset = 0;
     int size = lseek(fd, 0, SEEK_END);
     lseek(fd, 0, SEEK_SET);
-    while (offset<size)
+    while (offset < size)
     {
         // 第三个参数为文件偏移量
         sendfile(cfd, fd, &offset, size);
@@ -430,3 +452,43 @@ int sendHeadMsg(int cfd, int stat, char *descr, const char *type, int length)
     </body>
 </html>
 */
+
+// 将字符转换为整形数
+int hexToDec(char c)
+{
+    if (c >= '0' && c <= '9')
+        return c - '0';
+    if (c >= 'a' && c <= 'f')
+        return c - 'a' + 10;
+    if (c >= 'A' && c <= 'F')
+        return c - 'A' + 10;
+
+    return 0;
+}
+
+// 解码
+// to 存储解码之后的数据, 传出参数, from被解码的数据, 传入参数
+void decodeMsg(char *to, char *from)
+{
+    for (; *from != '\0'; ++to, ++from)
+    {
+        // isxdigit -> 判断字符是不是16进制格式, 取值在 0-f
+        // Linux%E5%86%85%E6%A0%B8.jpg
+        if (from[0] == '%' && isxdigit(from[1]) && isxdigit(from[2]))
+        {
+            // 将16进制的数 -> 十进制 将这个数值赋值给了字符 int -> char
+            // B2 == 178
+            // 将3个字符, 变成了一个字符, 这个字符就是原始数据
+            *to = hexToDec(from[1]) * 16 + hexToDec(from[2]);
+
+            // 跳过 from[1] 和 from[2] 因此在当前循环中已经处理过了
+            from += 2;
+        }
+        else
+        {
+            // 字符拷贝, 赋值
+            *to = *from;
+        }
+    }
+    *to = '\0';
+}
