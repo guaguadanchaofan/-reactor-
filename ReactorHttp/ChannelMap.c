@@ -35,20 +35,20 @@ bool ChannelMapAddROM(struct ChannelMap *map, int newsize, int unitsize)
     if (map != NULL)
     {
         if (map->_size < newsize)
-       {    
-            int cursize=map->_size;
-            while(cursize<newsize)
+        {
+            int cursize = map->_size;
+            while (cursize < newsize)
             {
-                cursize*=2;
+                cursize *= 2;
             }
             struct ChannelMap *tmp = (struct ChannelMap *)realloc(map->_list, cursize * unitsize);
             if (tmp == NULL)
             {
                 return false;
             }
-            map->_list= tmp;
-            map->_size=cursize;
-            memset(map->_list[map->_size],0,(cursize-map->_size)*unitsize); 
+            map->_list = tmp;
+            map->_size = cursize;
+            memset(map->_list[map->_size], 0, (cursize - map->_size) * unitsize);
             return true;
         }
     }
