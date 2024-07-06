@@ -71,7 +71,7 @@ int initListenFD(unsigned short port)
     // htonl()：用于将主机字节序的32位整数值转换为网络字节序。
     // ntohl()：用于将网络字节序的32位整数值转换回主机字节序。
     addr.sin_port = htons(port);
-    // 注意要采用大端（低地址储存高位） INADDR_ANY表示0不区分大小端
+    // 注意要采用大端（低地址储存高位） INADDR_ANY表示0不区分大小端INADDR_ANY表示可以用任何地址
     addr.sin_addr.s_addr = INADDR_ANY;
     ret = bind(lfd, (struct sockaddr *)&addr, sizeof(addr));
     if (ret == -1)
