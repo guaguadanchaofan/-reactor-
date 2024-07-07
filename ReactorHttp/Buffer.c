@@ -131,3 +131,21 @@ char* findCRLFBuffer(struct Buffer *buffer)
     char* ptr = memmem(buffer->_data+buffer->_readPos,bufferReadAbleSize(buffer),"\r\n",2);
     return ptr;
 }
+
+
+//发送数据
+int sendDataBuffer(struct Buffer *buffer,int fd)
+{
+    //判断有无数据
+    int readable = bufferReadAbleSize(buffer);
+    if(readable > 0)
+    {
+        int count = send(fd,buffer->_data+buffer->_readPos,readable,0);
+        if(count)
+        {
+            buffer->_data+=count;
+            usleep(1);
+        }
+        return count;
+    }
+}

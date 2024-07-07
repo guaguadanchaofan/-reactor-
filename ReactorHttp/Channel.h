@@ -22,12 +22,15 @@ struct Channel
     // 读写回调函数
     HandelFunc _writecallback;
     HandelFunc _readcallback;
+    // 销毁回调
+    HandelFunc _destroycallback;
+
     // 回调函数参数
     void *_arg;
 };
 
 // channel初始化
-struct Channel *initchannel(int fd, int event, HandelFunc writeFunc, HandelFunc readFunc, void *arg);
+struct Channel *initchannel(int fd, int event, HandelFunc writeFunc, HandelFunc readFunc, HandelFunc destroyFunc, void *arg);
 
 // 修改fd的写事件（检测or不检测）
 void writeEventEnable(struct Channel *Channel, bool flag);

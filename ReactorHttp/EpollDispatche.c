@@ -79,6 +79,8 @@ static int epollremove(struct Channel *channel, struct EventLoop *EventLoop)
         perror("EPOLL_CTL_DEL");
         exit(0);
     }
+    channel->_destroycallback(channel->_arg);
+    return 0;
 }
 
 static int epollmodify(struct Channel *channel, struct EventLoop *EventLoop)

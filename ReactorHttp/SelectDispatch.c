@@ -72,6 +72,7 @@ static int selectremove(struct Channel *channel, struct EventLoop *EventLoop)
 {
     struct SelectData *data = (struct SelectData *)EventLoop->disepatherData;
     clearFdSet(channel, data);
+    channel->_destroycallback(channel->_arg);
     return 0;
 }
 

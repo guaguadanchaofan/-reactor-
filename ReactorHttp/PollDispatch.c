@@ -95,6 +95,8 @@ static int pollremove(struct Channel *channel, struct EventLoop *EventLoop)
             break;
         }
     }
+    //通过channel释放对应的tcpconnection资源
+    channel->_destroycallback(channel->_arg);
     return 0;
 }
 

@@ -1,5 +1,7 @@
 #pragma once
 #include<stdbool.h>
+#include"Buffer.h"
+#include"HttpResponse.h"
 // 定义请求头键值对
 struct RequestHeader
 {
@@ -43,5 +45,11 @@ void addHttpRequestHeader(struct HttpRequest *reqheader,const char * key,const c
 //根据key得到value值
 char* getHttpRequestHeader(struct HttpRequest *reqheader,const char * key);
 //解析请求行
-bool parseHttpRequest(struct HttpRequest *reqheader,struct Buffer* buffer);
+bool parseHttpRequestLine(struct HttpRequest *reqheader,struct Buffer* buffer);
 //解析请求头
+bool parseHttpRequestHeader(struct HttpRequest *reqheader,struct Buffer* buffer);
+//解析完整Http请求
+bool parseHttpRequest(struct HttpRequest *reqheader,struct Buffer* readbuffer,struct Buffer* writebuffer,struct HttpResponse* resp,int socket);
+//处理http请求
+bool processHttpRequest(struct HttpRequest *reqheader,struct HttpResponse* resp);
+
