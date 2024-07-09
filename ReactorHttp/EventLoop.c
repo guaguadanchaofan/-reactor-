@@ -74,7 +74,6 @@ int RunEventLoop(struct EventLoop *EventLoop)
 int ActivateEvent(struct EventLoop *EventLoop, int events, int fd)
 {
     Debug("处理激活的fd");
-    
     if (fd < 0 && EventLoop == NULL)
     {
         return -1;
@@ -86,12 +85,15 @@ int ActivateEvent(struct EventLoop *EventLoop, int events, int fd)
     if (events & readevent && channel->_readcallback)
     {
         // 调用对应的回调函数
+        Debug("调用对应的回调函数_readcallback");
         channel->_readcallback(channel->_arg);
     }
     if (events & writevent && channel->_writecallback)
     {
+        Debug("调用对应的回调函数_writecallback");
         channel->_writecallback(channel->_arg);
     }
+    return 0;
 }
 
 // 添加任务到任务队列

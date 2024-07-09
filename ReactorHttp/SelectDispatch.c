@@ -1,7 +1,7 @@
 #include "Dispatcher.h"
 #include <sys/select.h>
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 #define MAX 1024
 
 struct SelectData
@@ -25,7 +25,6 @@ static int selectclear(struct EventLoop *EventLoop);
 static void setFdSet(struct Channel *channel, struct SelectData *data);
 static void clearFdSet(struct Channel *channel, struct SelectData *data);
 
-
 struct Dispatcher Selectdispatch = {
     selectinit,
     selectadd,
@@ -37,6 +36,7 @@ struct Dispatcher Selectdispatch = {
 // static定义局部函数只在本文件生效
 static void *selectinit()
 {
+    printf("selectinit\n");
     struct SelectData *data = (struct SelectData *)malloc(sizeof(struct SelectData));
     FD_ZERO(&data->_readset);
     FD_ZERO(&data->_writeset);
@@ -67,6 +67,10 @@ static void clearFdSet(struct Channel *channel, struct SelectData *data)
 static int selectadd(struct Channel *channel, struct EventLoop *EventLoop)
 {
     struct SelectData *data = (struct SelectData *)EventLoop->disepatherData;
+    if (channel->_fd >= MAX)
+    {
+        return -1;
+    }
     setFdSet(channel, data);
     return 0;
 }
@@ -89,31 +93,33 @@ static int selectmodify(struct Channel *channel, struct EventLoop *EventLoop)
 
 static int selectdispatch(struct EventLoop *EventLoop, int timeout)
 {
+
     struct SelectData *data = (struct SelectData *)EventLoop->disepatherData;
     struct timeval val;
-    val.tv_sec=timeout;
-    val.tv_usec=0;
-    fd_set wset=data->_writeset;
-    fd_set rset=data->_readset;
-    int count = select(MAX, &wset ,&rset,NULL, &val);
+    val.tv_sec = timeout;
+    val.tv_usec = 0;
+    fd_set wset = data->_writeset;
+    fd_set rset = data->_readset;
+    int count = select(MAX, &wset, &rset, NULL, &val);
     if (count == -1)
     {
         perror("select");
         exit(0);
     }
-    for (int i = 0; i < MAX; i++)
+    for (int i = 0; i < MAX; ++i)
     {
-        if (FD_ISSET(i,&rset))
+        if (FD_ISSET(i, &rset))
         {
             //
-            ActivateEvent(EventLoop,readevent,i);
+            ActivateEvent(EventLoop, readevent, i);
         }
-        if (FD_ISSET(i,&wset))
+        if (FD_ISSET(i, &wset))
         {
             //
-            ActivateEvent(EventLoop,writevent,i);
+            ActivateEvent(EventLoop, writevent, i);
         }
     }
+    return 0;
 }
 
 static int selectclear(struct EventLoop *EventLoop)

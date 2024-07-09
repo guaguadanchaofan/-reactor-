@@ -5,7 +5,7 @@
 #include"HttpRequest.h"
 #include"HttpResponse.h"
 
-#define _SEND_MSG_AUTO
+//#define _SEND_MSG_AUTO
 struct TcpConnection
 {   
     struct EventLoop* EventLoop;

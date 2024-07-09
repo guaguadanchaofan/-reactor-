@@ -68,7 +68,6 @@ enum HttpRequestState HttpRequestState(struct HttpRequest *reqheader)
 // 添加请求头
 void addHttpRequestHeader(struct HttpRequest *reqheader, const char *key, const char *value)
 {
-    Debug("添加请求头.........");
     reqheader->reqHeader[reqheader->reqHeaderNum].key = (char *)key;
     reqheader->reqHeader[reqheader->reqHeaderNum].value = (char *)value;
     //++请求头数量
@@ -110,8 +109,6 @@ char *splitRequestLine(char *start, char *end, char *sub, char **ptr)
 // 解析请求行
 bool parseHttpRequestLine(struct HttpRequest *reqheader, struct Buffer *readbuf)
 {
-    Debug("解析请求行..........");
-
     // 读出请求行保存字符串结束地址
     char *end = findCRLFBuffer(readbuf);
     // 保存字符串起始地址
@@ -159,7 +156,6 @@ bool parseHttpRequestLine(struct HttpRequest *reqheader, struct Buffer *readbuf)
 // 解析请求头
 bool parseHttpRequestHeader(struct HttpRequest *reqheader, struct Buffer *readbuf)
 {
-    Debug("解析请求头..........");
     char *end = findCRLFBuffer(readbuf);
     if (end != NULL)
     {
@@ -197,7 +193,6 @@ bool parseHttpRequestHeader(struct HttpRequest *reqheader, struct Buffer *readbu
 // 解析完整Http请求
 bool parseHttpRequest(struct HttpRequest *reqheader, struct Buffer *readbuffer, struct Buffer *writebuffer, struct HttpResponse *resp, int socket)
 {
-    Debug("解析完整Http请求..........");
     bool flag = true;
     while (reqheader->curState != ParseReqDone)
     {
@@ -222,7 +217,6 @@ bool parseHttpRequest(struct HttpRequest *reqheader, struct Buffer *readbuffer, 
     // 判断是否解析完了，如果完了需要准备恢复数据
     if (reqheader->curState == ParseReqDone)
     {
-        Debug("判断是否解析完了，如果完了需要准备恢复数据..........");
         // 根据解析数据做出对应处理
         processHttpRequest(reqheader, resp);
         // 组织响应数据发送到客户端
@@ -235,7 +229,6 @@ bool parseHttpRequest(struct HttpRequest *reqheader, struct Buffer *readbuffer, 
 // 处理http请求
 bool processHttpRequest(struct HttpRequest *reqheader, struct HttpResponse *resp)
 {
-    Debug("处理http请求..........");
     // 只解析get请求
     if (strcasecmp(reqheader->method, "get") != 0)
     {
@@ -263,7 +256,6 @@ bool processHttpRequest(struct HttpRequest *reqheader, struct HttpResponse *resp
         // 文件不存在--404
         // sendHeadMsg(cfd, 404, "Not Found", getFileType(".html"), -1);
         // sendFile("404.html", cfd);
-        Debug(" 文件不存在--404..........");
         resp->StatusCode = 404;
         strcpy(resp->StatusMsg, "Not Found");
         resp->StatusCode = NotFound;
@@ -281,7 +273,6 @@ bool processHttpRequest(struct HttpRequest *reqheader, struct HttpResponse *resp
         // 是目录
         // sendHeadMsg(cfd, 200, "OK", getFileType(".html"), -1);
         // sendDir(cfd, file);
-        Debug(" 判断文件类型是目录..........");
         addHeaderHttpResponse(resp, "Content-type", getFileType(".html"));
         resp->sendDataFunc = sendDir;
     }
@@ -443,10 +434,9 @@ void sendFile(const char *namefile, struct Buffer *sendbuf, int cfd)
             // 发送数据
             // send(cfd, buffer, sizeof buffer, 0);
             appendDataBuffer(sendbuf, buffer, len);
-#ifndef MSG_SEND_AUTO
+#ifndef _SEND_MSG_AUTO
             sendDataBuffer(sendbuf, cfd);
 #endif
-            usleep(10); // 防止发送太快客户端来不及解析
         }
         // 没数据可读了
         else if (len == 0)

@@ -13,8 +13,6 @@ struct HttpResponse *initHttpResponse()
     // 初始化数组
     bzero(resp->ResponseHeader, size);
     bzero(resp->StatusMsg, sizeof(resp->StatusMsg));
-    //
-    Debug("初始化HttpResponse.....");
     resp->sendDataFunc = NULL;
     return resp;
 }
@@ -35,7 +33,6 @@ void destroyHttpResponse(struct HttpResponse *Resp)
 // 添加请求头
 void addHeaderHttpResponse(struct HttpResponse *Resp, const char *key, const char *value)
 {
-    Debug("添加请求头.....");
     if (Resp != NULL || key != NULL || value != NULL)
     {
         strcpy(Resp->ResponseHeader[Resp->headerNum].key, key);
@@ -48,7 +45,6 @@ void addHeaderHttpResponse(struct HttpResponse *Resp, const char *key, const cha
 // 组织Http响应数据
 void prepareMsgHttpResponse(struct HttpResponse *Resp, struct Buffer *sendbuf, int socket)
 {
-    Debug("组织Http响应数据.....");
     // 响应头
     char tmp[1024]={0};
     sprintf(tmp, "HTTP/1.1 %d %s\r\n", Resp->StatusCode, Resp->StatusMsg);
@@ -61,7 +57,7 @@ void prepareMsgHttpResponse(struct HttpResponse *Resp, struct Buffer *sendbuf, i
     }
     // 空行
     appendStringBuffer(sendbuf, "\r\n");
-#ifndef MSG_SEND_AUTO
+#ifndef _SEND_MSG_AUTO
     sendDataBuffer(sendbuf, socket);
 #endif
     // 回复响应数据

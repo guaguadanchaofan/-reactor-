@@ -1,12 +1,12 @@
 #include "TcpConnection.h"
-#include<stdlib.h>
-#include<stdio.h>
-#include"Log.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include "Log.h"
 int processRead(void *arg)
 {
     struct TcpConnection *conn = (struct TcpConnection *)arg;
     int count = socketReadBuffer(conn->readBuf, conn->channel->_fd);
-    Debug("接收到的http请求的数据：%s",conn->readBuf->_data+conn->readBuf->_readPos);
+    Debug("接收到的http请求的数据：%s", conn->readBuf->_data + conn->readBuf->_readPos);
     if (count > 0)
     {
 #ifdef _SEND_MSG_AUTO
@@ -25,16 +25,20 @@ int processRead(void *arg)
     }
     else
     {
+#ifdef _SEND_MSG_AUTO
+        // 断开连接
+        AddTaskEventLoop(conn->EventLoop, conn->channel, DELETE);
+#endif
+        return 0;
+    }
 #ifndef _SEND_MSG_AUTO
         // 断开连接
         AddTaskEventLoop(conn->EventLoop, conn->channel, DELETE);
 #endif
-    return 0;
-    }
 }
 
 int processwrite(void *arg)
-{   
+{
     Debug("开始发送数据，基于写事件.....");
     struct TcpConnection *conn = (struct TcpConnection *)arg;
     int count = sendDataBuffer(conn->writeBuf, conn->channel->_fd);
@@ -56,6 +60,7 @@ int processwrite(void *arg)
 // 初始化
 struct TcpConnection *initTcpConnection(struct EventLoop *EventLoop, int fd)
 {
+    Debug("initTcpConnection ");
     struct TcpConnection *conn = (struct TcpConnection *)malloc(sizeof(struct TcpConnection));
     conn->EventLoop = EventLoop;
     conn->readBuf = initBuffer(10240);
@@ -63,9 +68,9 @@ struct TcpConnection *initTcpConnection(struct EventLoop *EventLoop, int fd)
     conn->req = initHttpRequest();
     conn->resp = initHttpResponse();
     sprintf(conn->name, "TcpConnection-%d", fd);
-    conn->channel = initchannel(fd, readevent, processwrite, processRead,detroyTcpConnection,conn);
+    conn->channel = initchannel(fd, readevent, processwrite, processRead, detroyTcpConnection, conn);
     AddTaskEventLoop(EventLoop, conn->channel, ADD);
-    Debug("和客户端建立连接 threadid:%d threadname:%s connname:%s ",EventLoop->_threadID,EventLoop->_threadName,conn->name);
+    Debug("和客户端建立连接 threadid:%d threadname:%s connname:%s ", EventLoop->_threadID, EventLoop->_threadName, conn->name);
     return conn;
 }
 
@@ -75,16 +80,16 @@ int detroyTcpConnection(void *arg)
     struct TcpConnection *conn = (struct TcpConnection *)arg;
     if (conn != NULL)
     {
-        if (conn->readBuf && conn->writeBuf && bufferReadAbleSize(conn->readBuf) == 0&& bufferReadAbleSize(conn->writeBuf)==0)
+        if (conn->readBuf && conn->writeBuf && bufferReadAbleSize(conn->readBuf) == 0 && bufferReadAbleSize(conn->writeBuf) == 0)
         {
             destroyBuffer(conn->readBuf);
             destroyBuffer(conn->writeBuf);
             destroyHttpRequest(conn->req);
             destroyHttpResponse(conn->resp);
-            destroyChannel(conn->EventLoop,conn->channel);
+            destroyChannel(conn->EventLoop, conn->channel);
         }
         free(conn);
     }
-    Debug("连接断开，释放资源  connname: %s",conn->name);
+    Debug("连接断开，释放资源  connname: %s", conn->name);
     return 0;
 }

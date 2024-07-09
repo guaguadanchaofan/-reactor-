@@ -84,7 +84,6 @@ int appendDataBuffer(struct Buffer *buffer, const char *data, int size)
     extendRoomBuffer(buffer, size);
     // 数据拷贝
     memcpy(buffer->_data + buffer->_writePos, data, size);
-    Debug("%s",buffer->_data + buffer->_writePos);
     buffer->_writePos += size;
     return 0;
 }
@@ -146,12 +145,11 @@ int sendDataBuffer(struct Buffer *buffer, int fd)
     int readable = bufferReadAbleSize(buffer);
     if (readable > 0)
     {
-        Debug("数据：%S",buffer->_data + buffer->_readPos);
-        int count = send(fd, buffer->_data + buffer->_readPos, readable, 0);
+        int count = send(fd, buffer->_data + buffer->_readPos, readable, MSG_NOSIGNAL);
         if (count)
         {
-            buffer->_data += count;
-            usleep(1000);
+            buffer->_readPos += count;
+            usleep(10);
         }
         return count;
     }

@@ -8,8 +8,9 @@ typedef int (*HandelFunc)(void *arg);
 //
 enum FDevent
 {
-    writevent = 0x01,
-    readevent = 0x02
+    TimeOut = 0x01,
+    writevent = 0x02,
+    readevent = 0x04
 };
 
 // 创建channel结构体
