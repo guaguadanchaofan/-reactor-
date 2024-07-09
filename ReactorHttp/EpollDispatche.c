@@ -1,5 +1,9 @@
 #include "Dispatcher.h"
 #include <sys/epoll.h>
+#include <unistd.h>
+#include<stdlib.h>
+#include<stdio.h>
+#include"Log.h"
 #define MAX 500
 
 // 初始化---poll select epoll的数据块
@@ -49,14 +53,17 @@ static int epollctl(struct Channel *channel, struct EventLoop *EventLoop, int op
     struct EpollData *data = (struct EpollData *)EventLoop->disepatherData;
     struct epoll_event ev;
     ev.data.fd = channel->_fd;
+    int events = 0;
     if (channel->_events & readevent)
     {
-        ev.events |= EPOLLIN;
+        events |= EPOLLIN;
     }
     if (channel->_events & writevent)
     {
-        ev.events |= EPOLLOUT;
+        events |= EPOLLOUT;
     }
+    ev.events=events;
+    Debug("epfd:%d  ,op:%d,  fd:%d  ", data->_epfd,op,channel->_fd);
     int ret = epoll_ctl(data->_epfd, op, channel->_fd, &ev);
     return ret;
 }
@@ -95,7 +102,7 @@ static int epollmodify(struct Channel *channel, struct EventLoop *EventLoop)
 
 static int epolldispatch(struct EventLoop *EventLoop, int timeout)
 {
-    struct EpollData *data = (struct Dispatcher *)EventLoop->disepatherData;
+    struct EpollData *data = (struct EpollData *)(EventLoop->disepatherData);
     int count = epoll_wait(data->_epfd, data->_ev, MAX, 1000 * timeout);
     if (count == -1)
     {

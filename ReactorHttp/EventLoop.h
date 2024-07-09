@@ -25,7 +25,7 @@ struct ChannelEvent
     // 下一个节点
     struct ChannelEvent *_next;
 };
-
+struct Dispatcher;
 struct EventLoop
 {
     // 判断工作状态

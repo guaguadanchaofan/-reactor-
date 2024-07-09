@@ -22,4 +22,4 @@ struct TcpConnection
 //初始化
 struct TcpConnection* initTcpConnection(struct EventLoop* EventLoop,int fd);
 //释放资源
-int detroyTcpConnection(void* arg);
+int detroyTcpConnection(void* arg); 

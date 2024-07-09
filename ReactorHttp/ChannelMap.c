@@ -6,7 +6,7 @@ struct ChannelMap *initChannelMap(int size)
     struct ChannelMap *map = (struct ChannelMap *)malloc(sizeof(struct ChannelMap));
     if (map == NULL)
     {
-        return;
+        return NULL;
     }
     map->_size = size;
     map->_list = (struct Channel **)malloc(size * sizeof(struct Channel *));
@@ -41,14 +41,14 @@ bool ChannelMapAddROM(struct ChannelMap *map, int newsize, int unitsize)
             {
                 cursize *= 2;
             }
-            struct ChannelMap *tmp = (struct ChannelMap *)realloc(map->_list, cursize * unitsize);
+            struct Channel **tmp = realloc(map->_list, cursize * unitsize);
             if (tmp == NULL)
             {
                 return false;
             }
             map->_list = tmp;
             map->_size = cursize;
-            memset(map->_list[map->_size], 0, (cursize - map->_size) * unitsize);
+            memset(&map->_list[map->_size], 0, (cursize - map->_size) * unitsize);
             return true;
         }
     }

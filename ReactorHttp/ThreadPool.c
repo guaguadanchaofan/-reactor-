@@ -1,5 +1,7 @@
 #include "ThreadPool.h"
 #include <assert.h>
+#include <stdlib.h>
+#include "EventLoop.h"
 // 初始化线程池
 struct ThreadPool *initThreadPool(struct EventLoop *mainLoop, int count)
 {
@@ -47,7 +49,7 @@ struct EventLoop *takeWorkEventLoop(struct ThreadPool *pool)
         exit(0);
     }
     // 从线程池中找到一个子线程，然后取出里面的反应堆实例
-    struct EVentLoop *EventLoop = pool->_mainLoop;
+    struct EventLoop *EventLoop = pool->_mainLoop;
     if (pool->threadNum > 0)
     {
         EventLoop = pool->workthreads[pool->index]._EventLoop;

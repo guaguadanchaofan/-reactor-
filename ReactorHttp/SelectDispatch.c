@@ -1,6 +1,14 @@
 #include "Dispatcher.h"
 #include <sys/select.h>
+#include<stdio.h>
+#include<stdlib.h>
 #define MAX 1024
+
+struct SelectData
+{
+    fd_set _writeset;
+    fd_set _readset;
+};
 
 // 初始化---poll select epoll的数据块
 static void *selectinit();
@@ -17,11 +25,6 @@ static int selectclear(struct EventLoop *EventLoop);
 static void setFdSet(struct Channel *channel, struct SelectData *data);
 static void clearFdSet(struct Channel *channel, struct SelectData *data);
 
-struct SelectData
-{
-    fd_set _writeset;
-    fd_set _readset;
-};
 
 struct Dispatcher Selectdispatch = {
     selectinit,
@@ -118,4 +121,5 @@ static int selectclear(struct EventLoop *EventLoop)
     struct SelectData *data = (struct SelectData *)EventLoop->disepatherData;
     // 释放创建的结构体
     free(data);
+    return 0;
 }

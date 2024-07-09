@@ -1,5 +1,7 @@
 #include "Dispatcher.h"
 #include <poll.h>
+#include<stdio.h>
+#include<stdlib.h>
 #define MAX 1024
 
 // 初始化---poll select epoll的数据块

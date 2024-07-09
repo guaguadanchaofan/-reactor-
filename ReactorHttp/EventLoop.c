@@ -3,7 +3,8 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
-
+#include<stdio.h>
+#include"Log.h"
 // 主线程
 struct EventLoop *initEventLoop()
 {
@@ -47,7 +48,7 @@ struct EventLoop *initEventLoopEx(const char *threaName)
         exit(0);
     }
     // 规定：socketpair[0] 写数据  socketpair[1] 收数据
-    struct Channel *channel = initchannel(data->socketpair[0], readevent, NULL, readLocalMessage, data);
+    struct Channel *channel = initchannel(data->socketpair[0], readevent, NULL, readLocalMessage,NULL, data);
     // channel添加到任务队列
     AddTaskEventLoop(data, channel, ADD);
     return data;
@@ -72,6 +73,8 @@ int RunEventLoop(struct EventLoop *EventLoop)
 // 处理激活的fd
 int ActivateEvent(struct EventLoop *EventLoop, int events, int fd)
 {
+    Debug("处理激活的fd");
+    
     if (fd < 0 && EventLoop == NULL)
     {
         return -1;

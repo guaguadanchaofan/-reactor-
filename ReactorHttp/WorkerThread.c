@@ -1,13 +1,13 @@
 #include "WorkerThread.h"
-
+#include<stdio.h>
 int initWorkThread(struct WorkerThread *thread, int index)
 {
     thread->_threadID = 0;
     thread->_EventLoop = NULL;
-    sprintf(thread->_name, "Subthread->%d", index);
+    sprintf(thread->_name, "Subthread--%d", index);
     pthread_mutex_init(&thread->_mutex, NULL);
     pthread_cond_init(&thread->_cond, NULL);
-    return 9;
+    return 0;
 }
 
 // 子线程回调函数

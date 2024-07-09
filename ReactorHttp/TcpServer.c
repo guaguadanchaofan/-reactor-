@@ -4,7 +4,9 @@
 #include <sys/types.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
-#include"TcpConnection.h"
+#include <stdio.h>
+#include "TcpConnection.h"
+#include "Log.h"
 // 初始化
 struct TcpServer *initTcpServer(unsigned short port, int threadNum)
 {
@@ -28,7 +30,7 @@ struct Listener *initListener(unsigned short port)
     if (lfd == -1)
     {
         perror("socket");
-        return -1;
+        return NULL;
     }
 
     // 2.设置端口复用
@@ -37,7 +39,7 @@ struct Listener *initListener(unsigned short port)
     if (ret == -1)
     {
         perror("setsockopt");
-        return -1;
+        return NULL;
     }
 
     // 3.绑定端口号和IP地址
@@ -50,7 +52,7 @@ struct Listener *initListener(unsigned short port)
     if (ret == -1)
     {
         perror("bind");
-        return -1;
+        return NULL;
     }
 
     // 4.设置监听
@@ -59,7 +61,7 @@ struct Listener *initListener(unsigned short port)
     if (ret == -1)
     {
         perror("listen");
-        return -1;
+        return NULL;
     }
     listener->lfd = lfd;
     listener->port = port;
@@ -72,20 +74,23 @@ int acceptConnection(void *arg)
     struct TcpServer *server = (struct TcpServer *)arg;
     // 获取通信文件描述符
     int cfd = accept(server->_listener->lfd, NULL, NULL); // 第二参数用于保存和客户端建立连接的ip跟端口 第三个参数用于描述第二个参数结构体的大小
-    //从线程池里面取出一个子线程的反应堆实例 处理这个cfd
-    struct EventLoop* EventLoop=takeWorkEventLoop(server->_pool);
-    //将cfd放到TcpConnection中处理
-    initTcpConnection(EventLoop,cfd);
-
+    // 从线程池里面取出一个子线程的反应堆实例 处理这个cfd
+    struct EventLoop *EventLoop = takeWorkEventLoop(server->_pool);
+    // 将cfd放到TcpConnection中处理
+    initTcpConnection(EventLoop, cfd);
+    Debug("同意连接........");
     return 0;
 }
 
 // 启动tcpserver
-void runListener(struct TcpServer *tcpserver)
+void runTcpServer(struct TcpServer *tcpserver)
 {
     // 启动线程池
     runThreadPool(tcpserver->_pool);
     // 添加检测任务
-    struct Channel *channel = initchannel(tcpserver->_listener->lfd, readevent, NULL, acceptConnection, tcpserver);
+    struct Channel *channel = initchannel(tcpserver->_listener->lfd, readevent, NULL, acceptConnection, NULL, tcpserver);
     AddTaskEventLoop(tcpserver->_mainloop, channel, ADD);
+    // 启动反应堆模型
+    RunEventLoop(tcpserver->_mainloop);
+    Debug("服务器启动成功....");
 }

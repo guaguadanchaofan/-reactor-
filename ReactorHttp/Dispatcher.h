@@ -1,7 +1,10 @@
 #pragma once
 #include "Channel.h"
 #include "EventLoop.h"
+#include"Dispatcher.h"
 
+
+struct EventLoop;
 struct Dispatcher
 {
     // 初始化---poll select epoll的数据块

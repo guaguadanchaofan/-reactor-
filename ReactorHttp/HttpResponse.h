@@ -37,7 +37,7 @@ struct HttpResponse
     struct ResponseHeader *ResponseHeader;
     int headerNum;
     ResponseHandle sendDataFunc;
-    char *fileName[128];
+    char fileName[128];
 };
 
 // 初始化

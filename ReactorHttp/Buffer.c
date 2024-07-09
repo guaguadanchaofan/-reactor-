@@ -1,17 +1,23 @@
-#define _GNU_SOURCE 
+#define _GNU_SOURCE
 #include "Buffer.h"
 #include <string.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <unistd.h>
 #include <sys/uio.h>
+#include "Log.h"
 // 初始化
 struct Buffer *initBuffer(int size)
 {
     struct Buffer *buffer = (struct Buffer *)malloc(sizeof(struct Buffer));
+    
     buffer->_capacity = size;
     buffer->_readPos = buffer->_writePos = 0;
     buffer->_data = (char *)malloc(size);
     memset(buffer->_data, 0, size);
+    return buffer;
 }
 
 // 销毁空间
@@ -60,7 +66,7 @@ void extendRoomBuffer(struct Buffer *buffer, int size)
     // 3.内存不够需要扩容
     else
     {
-        char *tmp = (char *)realloc(buffer->_data, buffer->_capacity + size);
+        void *tmp = realloc(buffer->_data, buffer->_capacity + size);
         assert(tmp != NULL);
         memset(tmp + buffer->_capacity, 0, size);
         buffer->_data = tmp;
@@ -78,6 +84,7 @@ int appendDataBuffer(struct Buffer *buffer, const char *data, int size)
     extendRoomBuffer(buffer, size);
     // 数据拷贝
     memcpy(buffer->_data + buffer->_writePos, data, size);
+    Debug("%s",buffer->_data + buffer->_writePos);
     buffer->_writePos += size;
     return 0;
 }
@@ -117,35 +124,36 @@ int socketReadBuffer(struct Buffer *buffer, int fd)
         appendDataBuffer(buffer, tmp, result - writreable);
     }
 
-    //注意释放内存
+    // 注意释放内存
     free(tmp);
     // 返回接收到多少个字节
     return result;
 }
 
-//根据\r\n取出一行 找到起中间数据块得位置，返回改位置
-char* findCRLFBuffer(struct Buffer *buffer)
+// 根据\r\n取出一行 找到起中间数据块得位置，返回改位置
+char *findCRLFBuffer(struct Buffer *buffer)
 {
-    //strstr---从大字符串堆中找到子字符串（遇到\0结束）
-    //memmem---从大数据堆中找到子数据（需要指定数据大小）
-    char* ptr = memmem(buffer->_data+buffer->_readPos,bufferReadAbleSize(buffer),"\r\n",2);
+    // strstr---从大字符串堆中找到子字符串（遇到\0结束）
+    // memmem---从大数据堆中找到子数据（需要指定数据大小）
+    char *ptr = memmem(buffer->_data + buffer->_readPos, bufferReadAbleSize(buffer), "\r\n", 2);
     return ptr;
 }
 
-
-//发送数据
-int sendDataBuffer(struct Buffer *buffer,int fd)
+// 发送数据
+int sendDataBuffer(struct Buffer *buffer, int fd)
 {
-    //判断有无数据
+    // 判断有无数据
     int readable = bufferReadAbleSize(buffer);
-    if(readable > 0)
+    if (readable > 0)
     {
-        int count = send(fd,buffer->_data+buffer->_readPos,readable,0);
-        if(count)
+        Debug("数据：%S",buffer->_data + buffer->_readPos);
+        int count = send(fd, buffer->_data + buffer->_readPos, readable, 0);
+        if (count)
         {
-            buffer->_data+=count;
-            usleep(1);
+            buffer->_data += count;
+            usleep(1000);
         }
         return count;
     }
+    return 0;
 }
