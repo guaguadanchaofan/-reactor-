@@ -1,7 +1,5 @@
 #pragma once
-
 #include <string>
-
 #include "noncopyable.h"
 
 #define LOG_INFO(logmsgFormat, ...)                       \
@@ -13,36 +11,42 @@
         snprintf(buf, 1024, logmsgFormat, ##__VA_ARGS__); \
         logger.log(buf);                                  \
     } while (0)
-#define LOG_ERROR(logmsgFormat, ...)                       \
+
+
+#define LOG_ERROR(logmsgFormat, ...)                      \
     do                                                    \
     {                                                     \
         Logger &logger = Logger::instance();              \
-        logger.setLogLevel(ERROR);                         \
+        logger.setLogLevel(ERROR);                        \
         char buf[1024] = {0};                             \
         snprintf(buf, 1024, logmsgFormat, ##__VA_ARGS__); \
         logger.log(buf);                                  \
     } while (0)
 
-#define LOG_FATAL(logmsgFormat, ...)                       \
+#define LOG_FATAL(logmsgFormat, ...)                      \
     do                                                    \
     {                                                     \
         Logger &logger = Logger::instance();              \
-        logger.setLogLevel(FATAL);                         \
+        logger.setLogLevel(FATAL);                        \
         char buf[1024] = {0};                             \
         snprintf(buf, 1024, logmsgFormat, ##__VA_ARGS__); \
         logger.log(buf);                                  \
+        exit(-1);                                         \
     } while (0)
-#ifdef DEBUG
-#define LOG_DEBUG(logmsgFormat, ...)                       \
+
+
+#if 1
+#define LOG_DEBUG(logmsgFormat, ...)                      \
     do                                                    \
     {                                                     \
         Logger &logger = Logger::instance();              \
-        logger.setLogLevel(DEBUG);                         \
+        logger.setLogLevel(DEBUG);                        \
         char buf[1024] = {0};                             \
         snprintf(buf, 1024, logmsgFormat, ##__VA_ARGS__); \
         logger.log(buf);                                  \
     } while (0)
 #endif
+
 // 定义日志级别  INFO ERROR FATAL
 enum Level
 {

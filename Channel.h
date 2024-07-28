@@ -21,15 +21,15 @@ public:
 
     // 设置回调函数对象
     void setReadCallback(ReadEventCallback cb) { readCallback_ = std::move(cb); }
-    void serWriteCallback(EventCallback cb) { writeCallback_ = std::move(cb); }
-    void serWriteCallback(EventCallback cb) { closeCallback_ = std::move(cb); }
-    void serWriteCallback(EventCallback cb) { errorCallback_ = std::move(cb); }
+    void setWriteCallback(EventCallback cb) { writeCallback_ = std::move(cb); }
+    void setCloseCallback(EventCallback cb) { closeCallback_ = std::move(cb); }
+    void setErrorCallback(EventCallback cb) { errorCallback_ = std::move(cb); }
 
     // 防止channel被手动move掉，还在执行回调操作
     void tie(const std::shared_ptr<void> &);
     int fd() const { return fd_; }
     int events() const { return events_; }
-    int set_revents(int revt) { revents_ = revt; }
+    void set_revents(int revt) { revents_ = revt; }
 
     bool isNoneEvent() const { return events_ == kNoneEvent; }
     bool isWriting() const { return events_ & kWriteEvent; }
