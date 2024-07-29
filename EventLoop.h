@@ -19,16 +19,16 @@ public:
     EventLoop();
     ~EventLoop();
     void loop(); //开启事件循环
-    void quie(); //退出事件循环
+    void quit(); //退出事件循环
     Timestamp pollReaturnTime()const{return pollReturnTime_;}
     void runInloop(Functor cb);//在当前loop中执行
-    void queueInloop(Functor cb); //把cb放入队列中，欢迎loop所在的线程执行cb
+    void queueInloop(Functor cb); //把cb放入队列中，唤醒loop所在的线程执行cb
     void wakeup(); //唤醒loop所在的线程
 
     //eventloop->poller
     void updateChannel(Channel* channel);
     void removeChannel(Channel* channel);
-    void hasChannel(Channel* channel);
+    bool hasChannel(Channel* channel);
     
     //判断是否实在自己的线程里面
     bool isInLoopThread()const{return threadId_ == CurrentThread::tid();}

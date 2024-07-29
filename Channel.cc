@@ -24,11 +24,12 @@ void Channel::update()
 {
     // 通过channel所属的loop，调用poller的方法
     // add code
+    evloop_->updateChannel(this);
 }
 // 把当前的channel删掉
 void Channel::remove()
 {
-    // evloop_->removeChannle(this);
+    evloop_->removeChannel(this);
 }
 
 void Channel::handleEvent(Timestamp receiveTime)

@@ -1,9 +1,8 @@
 #include"Poller.h"
 #include<stdlib.h>
+#include"EpollPoller.h"
 
-
-
-Poller* Poller::newDefaultPoller(Channel* channel)
+Poller* Poller::newDefaultPoller(EventLoop* loop)
 {
     if(::getenv("MUDUO_USR_POLL"))
     {
@@ -11,6 +10,6 @@ Poller* Poller::newDefaultPoller(Channel* channel)
     }
     else
     {
-        return nullptr; //生成epoll实例
+        return new EpollPoller(loop); //生成epoll实例
     }
 }

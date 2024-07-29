@@ -18,7 +18,7 @@ public:
     bool hasChannel(Channel* channel)const;
 
     //获取具体io复用的实现
-    static Poller* newDefaultPoller(Channel* channel);
+    static Poller* newDefaultPoller(EventLoop* loop);
 protected:
     //key表示fd value表示对应的channel
     using ChannelMap = std::unordered_map<int, Channel *>;
