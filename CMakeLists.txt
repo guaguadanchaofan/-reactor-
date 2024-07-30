@@ -7,5 +7,5 @@ set(CMAKE_BUILD_TYPE "Debug")
 aux_source_directory(. SRC_LIST)
 
 
-add_library(mymuduo SHARED ${SRC_LIST})
+add_library(mynet SHARED ${SRC_LIST})
 

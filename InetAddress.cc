@@ -31,5 +31,5 @@ std::string InetAddress::toIpPort() const
 uint16_t InetAddress::toPort() const
 {
     uint16_t port = ntohs(addr_.sin_port);
-
+    return port;
 }

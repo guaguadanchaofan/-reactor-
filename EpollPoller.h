@@ -4,7 +4,7 @@
 #include <sys/epoll.h>
 #include "Timestamp.h"
 
-class EpollPoller : Poller
+class EpollPoller : public Poller
 {
 public:
     EpollPoller(EventLoop *loop);

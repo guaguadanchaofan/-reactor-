@@ -72,7 +72,7 @@ void EventLoop::loop() // 开启事件循环
     LOG_INFO("EventLoop %p stop looping\n", this);
     looping_ = false;
 }
-void EventLoop::quie() // 退出事件循环
+void EventLoop::quit() // 退出事件循环
 {
     quit_ = true;
     if (!isInLoopThread())
@@ -149,6 +149,6 @@ void EventLoop::handleRead()
     ssize_t n = read(wakeupFd_, &one, sizeof one);
     if (n != sizeof one)
     {
-        LOG_ERROR("EventLoop::handleread() reads %d bytes instead of 8", n);
+        LOG_ERROR("EventLoop::handleread() reads %ld bytes instead of 8", n);
     }
 }

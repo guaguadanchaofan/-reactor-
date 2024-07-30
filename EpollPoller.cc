@@ -5,7 +5,6 @@
 #include "Channel.h"
 #include <string.h>
 
-
 // channel 未添加到poller中
 const int kNew = -1;
 // channel 已经添加到poller中
@@ -31,26 +30,26 @@ EpollPoller::~EpollPoller()
 // 给所有io复用保留统一的接口
 Timestamp EpollPoller::poll(int timeoutsMs, ChannelList *ActiveChannels)
 {
-    LOG_INFO("func = %s -> fd total count:%lu\n", __FUNCTION__,channels_.size());
-    int numEvents = epoll_wait(epollfd_,&*events_.begin(),static_cast<int>(events_.size()),timeoutsMs);
+    LOG_INFO("func = %s -> fd total count:%lu\n", __FUNCTION__, channels_.size());
+    int numEvents = epoll_wait(epollfd_, &*events_.begin(), static_cast<int>(events_.size()), timeoutsMs);
     int saveError = errno;
     Timestamp now(Timestamp::now());
-    if(numEvents > 0)
+    if (numEvents > 0)
     {
-        LOG_INFO("%d events happened\n",numEvents);
-        fillActiveChannels(numEvents,ActiveChannels); //传入活动的channel列表
-        if(numEvents == events_.size())
+        LOG_INFO("%d events happened\n", numEvents);
+        fillActiveChannels(numEvents, ActiveChannels); // 传入活动的channel列表
+        if (numEvents == events_.size())
         {
-            events_.resize(events_.size()*2); // 二倍扩容
+            events_.resize(events_.size() * 2); // 二倍扩容
         }
     }
-    else if(numEvents == 0)
+    else if (numEvents == 0)
     {
         LOG_DEBUG("%s timeout! \n", __FUNCTION__);
     }
     else
     {
-        if(saveError != EINTR)
+        if (saveError != EINTR)
         {
             errno = saveError;
             LOG_ERROR("EpollPoller::poll() error");
@@ -104,9 +103,9 @@ void EpollPoller::removeChannel(Channel *channel)
 // 填写活跃的链接
 void EpollPoller::fillActiveChannels(int numEvents, ChannelList *activeChannels)
 {
-    for(int i = 0 ; i < numEvents ; ++i)
+    for (int i = 0; i < numEvents; ++i)
     {
-        Channel* channel =static_cast<Channel*>(events_[i].data.ptr);
+        Channel *channel = static_cast<Channel *>(events_[i].data.ptr);
         channel->set_revents(events_[i].events);
         activeChannels->push_back(channel);
     }
