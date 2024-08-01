@@ -1,5 +1,6 @@
 #include "Buffer.h"
 #include <sys/uio.h>
+#include <unistd.h>
 
 // 从fd上读取数据 Poller工作在LT模式
 // buffer缓冲区是有大小的！ 但是从fd上读取数据的时候，却不知道TCP数据最终的大小
@@ -28,6 +29,16 @@ ssize_t Buffer::readFd(int fd, int *saveErrnp)
         wirteIndex_ = buffer_.size();
         append(extrabuf, n - writeable); //writeIndex_开始写 n-writeabke大小的数据
 
+    }
+    return n;
+}
+
+ssize_t Buffer::writeFd(int fd, int* saveErrno)
+{
+    ssize_t n = ::write(fd, peek(), readableBytes());
+    if (n < 0)
+    {
+        *saveErrno = errno;
     }
     return n;
 }

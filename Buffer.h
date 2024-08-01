@@ -83,6 +83,7 @@ public:
     }
     //从fd上读取数据
     ssize_t readFd(int fd , int * saveErrnp);
+    ssize_t writeFd(int fd , int * saveErrnp);
 private:
     void makeSpace(size_t len)
     {

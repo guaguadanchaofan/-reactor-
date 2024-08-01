@@ -12,7 +12,7 @@ class EventLoopThreadPoll : noncopyable
 public:
     using ThreadInitCallback = std::function<void(EventLoop *)>;
     EventLoopThreadPoll(EventLoop *baseloop, const std::string &nameArg);
-    ~EventLoopThreadPoll(){}
+    ~EventLoopThreadPoll();
     void setThreadNum(int numThreads) { numThreads_ = numThreads; }
     void start(const ThreadInitCallback &cb = ThreadInitCallback());
 

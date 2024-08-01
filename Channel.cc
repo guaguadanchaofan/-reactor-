@@ -14,6 +14,9 @@ Channel::Channel(EventLoop *loop, int fd)
       revents_(0),
       index_(-1),
       tied_(false) {}
+
+
+//一个Tcpconnection新连接创建的时候tcpconnection -> channel
 void Channel::tie(const std::shared_ptr<void> &obj)
 {
     tie_ = obj;

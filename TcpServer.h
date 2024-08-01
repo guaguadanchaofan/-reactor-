@@ -1,7 +1,7 @@
 #pragma once
 #include "noncopyable.h"
 #include "EventLoop.h"
-#include "EventLoopThreadPoll.h"
+#include "EventLoopThreadPool.h"
 #include "Acceprot.h"
 #include "InetAddress.h"
 #include <functional>
@@ -46,6 +46,7 @@ private:
     std::unique_ptr<Acceprot> acceptor_; // 运行在mainloop
     std::unique_ptr<EventLoopThreadPoll> threadPoll_;
 
+    HighWaterMarkCallback highWaterMarkCallback_;
     ConnectionCallback connectionCallback_;
     MessageCallback messageCallback_;
     WriteCompleteCallback writeCompleteCallback_; // 消息发送完成的回掉

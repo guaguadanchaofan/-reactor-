@@ -181,19 +181,19 @@ CMakeFiles/mynet.dir/EventLoopThread.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mynet.dir/EventLoopThread.cc.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/guagua/Desktop/reactor-server/EventLoopThread.cc -o CMakeFiles/mynet.dir/EventLoopThread.cc.s
 
-CMakeFiles/mynet.dir/EventLoopThreadPoll.cc.o: CMakeFiles/mynet.dir/flags.make
-CMakeFiles/mynet.dir/EventLoopThreadPoll.cc.o: /home/guagua/Desktop/reactor-server/EventLoopThreadPoll.cc
-CMakeFiles/mynet.dir/EventLoopThreadPoll.cc.o: CMakeFiles/mynet.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/guagua/Desktop/reactor-server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/mynet.dir/EventLoopThreadPoll.cc.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mynet.dir/EventLoopThreadPoll.cc.o -MF CMakeFiles/mynet.dir/EventLoopThreadPoll.cc.o.d -o CMakeFiles/mynet.dir/EventLoopThreadPoll.cc.o -c /home/guagua/Desktop/reactor-server/EventLoopThreadPoll.cc
+CMakeFiles/mynet.dir/EventLoopThreadPool.cc.o: CMakeFiles/mynet.dir/flags.make
+CMakeFiles/mynet.dir/EventLoopThreadPool.cc.o: /home/guagua/Desktop/reactor-server/EventLoopThreadPool.cc
+CMakeFiles/mynet.dir/EventLoopThreadPool.cc.o: CMakeFiles/mynet.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/guagua/Desktop/reactor-server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/mynet.dir/EventLoopThreadPool.cc.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mynet.dir/EventLoopThreadPool.cc.o -MF CMakeFiles/mynet.dir/EventLoopThreadPool.cc.o.d -o CMakeFiles/mynet.dir/EventLoopThreadPool.cc.o -c /home/guagua/Desktop/reactor-server/EventLoopThreadPool.cc
 
-CMakeFiles/mynet.dir/EventLoopThreadPoll.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mynet.dir/EventLoopThreadPoll.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/guagua/Desktop/reactor-server/EventLoopThreadPoll.cc > CMakeFiles/mynet.dir/EventLoopThreadPoll.cc.i
+CMakeFiles/mynet.dir/EventLoopThreadPool.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mynet.dir/EventLoopThreadPool.cc.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/guagua/Desktop/reactor-server/EventLoopThreadPool.cc > CMakeFiles/mynet.dir/EventLoopThreadPool.cc.i
 
-CMakeFiles/mynet.dir/EventLoopThreadPoll.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mynet.dir/EventLoopThreadPoll.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/guagua/Desktop/reactor-server/EventLoopThreadPoll.cc -o CMakeFiles/mynet.dir/EventLoopThreadPoll.cc.s
+CMakeFiles/mynet.dir/EventLoopThreadPool.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mynet.dir/EventLoopThreadPool.cc.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/guagua/Desktop/reactor-server/EventLoopThreadPool.cc -o CMakeFiles/mynet.dir/EventLoopThreadPool.cc.s
 
 CMakeFiles/mynet.dir/InetAddress.cc.o: CMakeFiles/mynet.dir/flags.make
 CMakeFiles/mynet.dir/InetAddress.cc.o: /home/guagua/Desktop/reactor-server/InetAddress.cc
@@ -317,7 +317,7 @@ mynet_OBJECTS = \
 "CMakeFiles/mynet.dir/EpollPoller.cc.o" \
 "CMakeFiles/mynet.dir/EventLoop.cc.o" \
 "CMakeFiles/mynet.dir/EventLoopThread.cc.o" \
-"CMakeFiles/mynet.dir/EventLoopThreadPoll.cc.o" \
+"CMakeFiles/mynet.dir/EventLoopThreadPool.cc.o" \
 "CMakeFiles/mynet.dir/InetAddress.cc.o" \
 "CMakeFiles/mynet.dir/Logger.cc.o" \
 "CMakeFiles/mynet.dir/Poller.cc.o" \
@@ -338,7 +338,7 @@ mynet_EXTERNAL_OBJECTS =
 /home/guagua/Desktop/reactor-server/lib/libmynet.so: CMakeFiles/mynet.dir/EpollPoller.cc.o
 /home/guagua/Desktop/reactor-server/lib/libmynet.so: CMakeFiles/mynet.dir/EventLoop.cc.o
 /home/guagua/Desktop/reactor-server/lib/libmynet.so: CMakeFiles/mynet.dir/EventLoopThread.cc.o
-/home/guagua/Desktop/reactor-server/lib/libmynet.so: CMakeFiles/mynet.dir/EventLoopThreadPoll.cc.o
+/home/guagua/Desktop/reactor-server/lib/libmynet.so: CMakeFiles/mynet.dir/EventLoopThreadPool.cc.o
 /home/guagua/Desktop/reactor-server/lib/libmynet.so: CMakeFiles/mynet.dir/InetAddress.cc.o
 /home/guagua/Desktop/reactor-server/lib/libmynet.so: CMakeFiles/mynet.dir/Logger.cc.o
 /home/guagua/Desktop/reactor-server/lib/libmynet.so: CMakeFiles/mynet.dir/Poller.cc.o
