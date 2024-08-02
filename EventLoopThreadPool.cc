@@ -1,6 +1,7 @@
 #include "EventLoopThreadPool.h"
 #include "EventLoopThread.h"
 #include <memory>
+#include <iostream>
 
 EventLoopThreadPoll::EventLoopThreadPoll(EventLoop *baseloop, const std::string &nameArg)
     : baseLoop_(baseloop),
@@ -25,7 +26,7 @@ void EventLoopThreadPoll::start(const ThreadInitCallback &cb)
         threads_.push_back(std::unique_ptr<EventLoopThread>(t));
         loops_.push_back(t->startLoop());
     }
-    if (numThreads_ == 0) // 如果未设置线程数量
+    if (numThreads_ == 0 && cb) // 如果未设置线程数量
     {
         cb(baseLoop_);
     }

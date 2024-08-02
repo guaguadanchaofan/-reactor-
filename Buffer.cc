@@ -7,8 +7,11 @@
 ssize_t Buffer::readFd(int fd, int *saveErrnp)
 {
     char extrabuf[65536] = {0}; // 栈上的内存 64k
+
     struct iovec vec[2];
+
     const size_t writeable = writeableBytes(); // Buffer底层缓冲区剩余的可写空间大小
+    
     vec[0].iov_base = begin() + wirteIndex_;
     vec[0].iov_len = writeable;
     vec[1].iov_base = extrabuf;

@@ -15,7 +15,8 @@
 					"source" : ".",
 					"targetIndexes" : 
 					[
-						0
+						0,
+						1
 					]
 				}
 			],
@@ -30,7 +31,8 @@
 					"name" : "mynet",
 					"targetIndexes" : 
 					[
-						0
+						0,
+						1
 					]
 				}
 			],
@@ -38,8 +40,15 @@
 			[
 				{
 					"directoryIndex" : 0,
+					"id" : "echo::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-echo-Debug-5651d3b935a75836e7cd.json",
+					"name" : "echo",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
 					"id" : "mynet::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-mynet-Debug-91a58e7fb6449c94cc77.json",
+					"jsonFile" : "target-mynet-Debug-a86b3006dafcf97912d5.json",
 					"name" : "mynet",
 					"projectIndex" : 0
 				}

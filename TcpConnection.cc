@@ -55,14 +55,13 @@ void TcpConnection::connectEstablished()
     channel_->tie(shared_from_this());
     channel_->enableReading(); // 注册channel的读事件
 
-
-    //新连接建议，执行回调
+    // 新连接建议，执行回调
     connectionCallback_(shared_from_this());
 }
 
 void TcpConnection::connectDestroy()
 {
-    if(state_ == kConnected)
+    if (state_ == kConnected)
     {
         setState(kDisconnected);
         channel_->disableAll();
@@ -70,8 +69,6 @@ void TcpConnection::connectDestroy()
     }
     channel_->remove();
 }
-
-
 
 void TcpConnection::handleRead(Timestamp reveiveTime)
 {
@@ -95,9 +92,10 @@ void TcpConnection::handleRead(Timestamp reveiveTime)
 }
 void TcpConnection::handleWrite()
 {
-    int savedErrono = 0;
+
     if (channel_->isWriting())
     {
+        int savedErrono = 0;
         ssize_t n = outputBuffer_.writeFd(channel_->fd(), &savedErrono);
         if (n > 0)
         {
@@ -127,14 +125,15 @@ void TcpConnection::handleWrite()
     }
 }
 
+// poller -> channel::closeCallback -> TcpConnection::handleclose
 void TcpConnection::handleClose()
 {
-    LOG_INFO("fd = %d state = %d\n", channel_->fd(), (int)state_);
+    LOG_INFO("TcpConnection::handleClose fd=%d state=%d \n", channel_->fd(), (int)state_);
     setState(kDisconnected);
     channel_->disableAll();
     TcpConnectionPtr connPtr(shared_from_this());
     connectionCallback_(connPtr); // 执行连接关闭的回调
-    closeCallback_(connPtr);      // 关闭连接的回调
+    closeCallback_(connPtr);      // 关闭连接的回调  执行的是tcpserver::removeconnection回调方法
 }
 
 void TcpConnection::handleError()
@@ -178,6 +177,7 @@ void TcpConnection::sendInLoop(const void *data, size_t len)
     if (state_ == kDisconnectiong)
     {
         LOG_ERROR("disconnection, give up writing!\n");
+        return;
     }
     // channel第一次开始写数据而且缓冲区没有待发送数据
     if (!channel_->isWriting() && outputBuffer_.readableBytes() == 0)
@@ -224,16 +224,16 @@ void TcpConnection::sendInLoop(const void *data, size_t len)
 }
 void TcpConnection::shutdownInLoop()
 {
-    if(!channel_->isWriting())
+    if (!channel_->isWriting())
     {
         socket_->shutdownWrite();
     }
 }
 void TcpConnection::shutdown()
 {
-    if(state_ == kConnected)
+    if (state_ == kConnected)
     {
         setState(kDisconnectiong);
-        loop_->runInloop(std::bind(&TcpConnection::shutdownInLoop,this));
+        loop_->runInloop(std::bind(&TcpConnection::shutdownInLoop, this));
     }
 }

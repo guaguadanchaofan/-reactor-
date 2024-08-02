@@ -3,9 +3,10 @@
 #include <sys/epoll.h>
 #include <memory>
 #include"Logger.h"
-const int kNoneEvent = 0;
-const int kReadEvent = EPOLLIN | EPOLLPRI;
-const int kWriteEvent = EPOLLOUT;
+
+const int Channel::kNoneEvent = 0;
+const int Channel::kReadEvent = EPOLLIN | EPOLLPRI;
+const int Channel::kWriteEvent = EPOLLOUT;
 
 Channel::Channel(EventLoop *loop, int fd)
     : evloop_(loop),
@@ -44,6 +45,10 @@ void Channel::handleEvent(Timestamp receiveTime)
         {
             handleEventWrithGuARD(receiveTime);
         }
+    }
+    else
+    {
+        handleEventWrithGuARD(receiveTime);
     }
 }
 void Channel::handleEventWrithGuARD(Timestamp receiveTime)

@@ -11,6 +11,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/mynet.dir/CurrentThread.cc.o.d"
   "CMakeFiles/mynet.dir/DefaultPoller.cc.o"
   "CMakeFiles/mynet.dir/DefaultPoller.cc.o.d"
+  "CMakeFiles/mynet.dir/EchoServer.cc.o"
+  "CMakeFiles/mynet.dir/EchoServer.cc.o.d"
   "CMakeFiles/mynet.dir/EpollPoller.cc.o"
   "CMakeFiles/mynet.dir/EpollPoller.cc.o.d"
   "CMakeFiles/mynet.dir/EventLoop.cc.o"

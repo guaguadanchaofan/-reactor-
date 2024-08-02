@@ -121,6 +121,7 @@ void EpollPoller::update(int operation, Channel *channel)
     evs.events = channel->events();
     evs.data.ptr = channel;
     int fd = channel->fd();
+    LOG_INFO("func = %s fd = %d events = %d index = %d \n", __FUNCTION__, channel->fd(), channel->events(), channel->index());
     if (epoll_ctl(epollfd_, operation, fd, &evs) < 0)
     {
         if (operation == EPOLL_CTL_DEL)

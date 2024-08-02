@@ -23,10 +23,3 @@ std::string Timestamp::toString() const
         return buf;
 }
 
-#include<iostream>
-int main()
-{
-    std::cout<<Timestamp::now().toString();
-    return 0;
-}
-

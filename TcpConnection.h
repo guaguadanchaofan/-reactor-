@@ -4,6 +4,11 @@
 #include <string>
 #include <atomic>
 #include "InetAddress.h"
+#include "TcpConnection.h"
+#include "Logger.h"
+#include "Socket.h"
+#include "Channel.h"
+#include "EventLoop.h"
 #include "Callbacks.h"
 #include "Timestamp.h"
 #include "Buffer.h"
@@ -26,6 +31,7 @@ public:
 
     bool connected() const { return state_ == kConnected; }
 
+    void send(const std::string &buf);
     // 关闭连接
     void shutdown();
 
@@ -45,16 +51,17 @@ public:
     {
         highWaterMarkCallback_ = cb, highWaterMark_ = highWaterMark;
     }
+    void setCloseCallback(const CloseCallback &cb)
+    {
+        closeCallback_ = cb;
+    }
 
     // 连接建立
     void connectEstablished();
     // 连接销毁
     void connectDestroy();
 
-    
 
-    void send(const std::string& buf);
-    void sendInLoop(const void* message,size_t len);
 private:
     enum StateE
     {
@@ -67,7 +74,8 @@ private:
     void handleWrite();
     void handleClose();
     void handleError();
-    void setState(StateE stat);
+    void setState(StateE state) { state_ = state; }
+    void sendInLoop(const void *message, size_t len);
     void shutdownInLoop();
 
     EventLoop *loop_; // 不是baseloop 因为都在tcpconnection都在subloop

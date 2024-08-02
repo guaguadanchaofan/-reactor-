@@ -2,6 +2,7 @@
 #include "noncopyable.h"
 #include "EventLoop.h"
 #include "EventLoopThreadPool.h"
+#include"TcpConnection.h"
 #include "Acceprot.h"
 #include "InetAddress.h"
 #include <functional>
@@ -20,7 +21,7 @@ public:
         KreusePort
     };
     using ThreadInitCallback = std::function<void(EventLoop *)>;
-    TcpServer(EventLoop *loop, const InetAddress &listenAddr,std::string &nameArg, Option opt = kNoReusePort);
+    TcpServer(EventLoop *loop, const InetAddress &listenAddr,const std::string &nameArg, Option opt = kNoReusePort);
     ~TcpServer();
 
     void setThreadInitCallback(const ThreadInitCallback &cb) { threadInitCallback_ = cb; }

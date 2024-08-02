@@ -33,7 +33,7 @@ void Thread::start()
                                                            {
         tid_ = CurrentThread::tid();
         sem_post(&sem);
-        func_; }));
+        func_(); }));
 
     sem_wait(&sem);
 }

@@ -129,6 +129,19 @@ mynet/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mynet.dir/build.make CMakeFiles/mynet.dir/build
 .PHONY : mynet/fast
 
+#=============================================================================
+# Target rules for targets named echo
+
+# Build rule for target.
+echo: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 echo
+.PHONY : echo
+
+# fast build rule for target.
+echo/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/echo.dir/build.make CMakeFiles/echo.dir/build
+.PHONY : echo/fast
+
 Acceprot.o: Acceprot.cc.o
 .PHONY : Acceprot.o
 
@@ -248,6 +261,33 @@ DefaultPoller.s: DefaultPoller.cc.s
 DefaultPoller.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mynet.dir/build.make CMakeFiles/mynet.dir/DefaultPoller.cc.s
 .PHONY : DefaultPoller.cc.s
+
+EchoServer.o: EchoServer.cc.o
+.PHONY : EchoServer.o
+
+# target to build an object file
+EchoServer.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mynet.dir/build.make CMakeFiles/mynet.dir/EchoServer.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/echo.dir/build.make CMakeFiles/echo.dir/EchoServer.cc.o
+.PHONY : EchoServer.cc.o
+
+EchoServer.i: EchoServer.cc.i
+.PHONY : EchoServer.i
+
+# target to preprocess a source file
+EchoServer.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mynet.dir/build.make CMakeFiles/mynet.dir/EchoServer.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/echo.dir/build.make CMakeFiles/echo.dir/EchoServer.cc.i
+.PHONY : EchoServer.cc.i
+
+EchoServer.s: EchoServer.cc.s
+.PHONY : EchoServer.s
+
+# target to generate assembly for a file
+EchoServer.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mynet.dir/build.make CMakeFiles/mynet.dir/EchoServer.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/echo.dir/build.make CMakeFiles/echo.dir/EchoServer.cc.s
+.PHONY : EchoServer.cc.s
 
 EpollPoller.o: EpollPoller.cc.o
 .PHONY : EpollPoller.o
@@ -545,6 +585,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... echo"
 	@echo "... mynet"
 	@echo "... Acceprot.o"
 	@echo "... Acceprot.i"
@@ -561,6 +602,9 @@ help:
 	@echo "... DefaultPoller.o"
 	@echo "... DefaultPoller.i"
 	@echo "... DefaultPoller.s"
+	@echo "... EchoServer.o"
+	@echo "... EchoServer.i"
+	@echo "... EchoServer.s"
 	@echo "... EpollPoller.o"
 	@echo "... EpollPoller.i"
 	@echo "... EpollPoller.s"

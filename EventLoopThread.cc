@@ -24,6 +24,7 @@ EventLoopThread::~EventLoopThread()
 EventLoop *EventLoopThread::startLoop()
 {
     thread_.start();
+    
     EventLoop *loop = nullptr;
     {
         std::unique_lock<std::mutex> lock(mutex_);

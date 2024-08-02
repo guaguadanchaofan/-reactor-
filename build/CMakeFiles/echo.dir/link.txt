@@ -1,0 +1,1 @@
+/usr/bin/c++  -g -std=c++11 -fPIC -g CMakeFiles/echo.dir/EchoServer.cc.o -o /home/guagua/Desktop/reactor-server/bin/echo  -Wl,-rpath,/home/guagua/Desktop/reactor-server/lib /home/guagua/Desktop/reactor-server/lib/libmynet.so -lpthread 

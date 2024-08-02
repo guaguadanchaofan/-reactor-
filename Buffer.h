@@ -13,7 +13,6 @@ public:
     readerIndex_(kChreapPrepend),
     wirteIndex_(kChreapPrepend)
     {}
-    ~Buffer();
     size_t readableBytes()const
     {
         return wirteIndex_ - readerIndex_;

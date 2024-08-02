@@ -27,9 +27,9 @@ void Socket::listen()
 int Socket::accept(InetAddress *peeraddr)
 {
     struct sockaddr_in addr;
-    socklen_t len;
+    socklen_t len = sizeof addr;
     bzero(&addr,sizeof(sockaddr_in));
-    int cfd = ::accept(sockfd_, (sockaddr*)&addr,&len);
+    int cfd = ::accept4(sockfd_, (sockaddr*)&addr,&len,SOCK_NONBLOCK | SOCK_CLOEXEC);
     if(cfd >= 0)
     {
         peeraddr->setSockAddrInet(addr);
