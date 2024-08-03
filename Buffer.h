@@ -69,6 +69,7 @@ public:
     //把[data,data+len] 内存上的数据，添加到writeable缓冲区当中
     void append(const char* data , size_t len)
     {
+        ensureWriteableBytes(len);
         std::copy(data,data+len,beginWrite());
         wirteIndex_ += len;
     }

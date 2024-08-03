@@ -22,6 +22,7 @@ TcpServer::TcpServer(EventLoop *loop, const InetAddress &listenAddr,const std::s
     nextConnId_(1),
     started_(0)
 {
+    // 当有先用户连接时，会执行TcpServer::newConnection回调
     acceptor_->setNewConnectionCallback(std::bind(&TcpServer::newConnection,this,std::placeholders::_1,std::placeholders::_2));
 
 }
@@ -32,6 +33,8 @@ TcpServer::~TcpServer()
     {
         TcpConnectionPtr conn(itme.second);
         itme.second.reset();
+
+        
         conn->getLoop()->runInloop(std::bind(&TcpConnection::connectDestroy,conn));
     }
 }

@@ -16,7 +16,7 @@ public:
         server_.setMassageCallback(std::bind(&EchoServer::onMessage, this, std::placeholders::_1,
                                              std::placeholders::_2, std::placeholders::_3));
         // 设置合适的loop线程数量
-        server_.setThreadNum(0);
+        server_.setThreadNum(3);
     }
     void start()
     {
@@ -40,8 +40,9 @@ private:
     void onMessage(const TcpConnectionPtr &conn, Buffer *buf, Timestamp time)
     {
         std::string msg = buf->retrieveAllAsString();
+        std::cout<<msg.c_str()<<std::endl;
         conn->send(msg);
-        conn->shutdown(); // 写段关闭 EPOLLHUB -> closecallback——
+        //conn->shutdown(); // 写段关闭 EPOLLHUB -> closecallback——
     }
     EventLoop *loop_;
     TcpServer server_;

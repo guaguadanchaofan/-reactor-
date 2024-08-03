@@ -2,6 +2,9 @@
 #include<strings.h>
 #include <arpa/inet.h>
 #include<string.h>
+
+
+
 InetAddress::InetAddress(uint16_t port, std::string ip)
 {
     bzero(&addr_,sizeof addr_);
@@ -9,10 +12,7 @@ InetAddress::InetAddress(uint16_t port, std::string ip)
     addr_.sin_port = htons(port);
     addr_.sin_addr.s_addr = inet_addr(ip.c_str());
 }
-InetAddress::InetAddress(const sockaddr_in &addr)
-{
-    addr_ = addr;
-}
+
 std::string InetAddress::toIP() const
 {
     char buf[64]={0};

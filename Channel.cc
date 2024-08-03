@@ -56,20 +56,30 @@ void Channel::handleEventWrithGuARD(Timestamp receiveTime)
     LOG_INFO("channel handleEvent revents:%d",revents_);
     
     if ((revents_ & EPOLLHUP) && !(revents_ & EPOLLIN))
-        if (closeCallback_)
+    {
+          if (closeCallback_)
             closeCallback_();
-
+    }
+      
     if (revents_ & EPOLLERR)
+    {
         if (errorCallback_)
             errorCallback_();
+    }
+        
 
     if (revents_ & (EPOLLIN | EPOLLPRI))
+    {
         if (readCallback_)
             readCallback_(receiveTime);
-
+    }
+        
     if (revents_ & EPOLLOUT)
+    {
         if (writeCallback_)
             writeCallback_();
+    }
+        
 }
 
 

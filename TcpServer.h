@@ -38,16 +38,18 @@ private:
     void newConnection(int sockfd, const InetAddress &peerAddr);
     void removeConnection(const TcpConnectionPtr &conn);
     void removeConnectionInLoop(const TcpConnectionPtr &conn);
+
     using ConnectionMap = std::unordered_map<std::string, TcpConnectionPtr>;
+    
     EventLoop *loop_; // baseloop
 
     const std::string ipPort_;
     const std::string name_;
 
     std::unique_ptr<Acceprot> acceptor_; // 运行在mainloop
-    std::unique_ptr<EventLoopThreadPoll> threadPoll_;
+    std::shared_ptr<EventLoopThreadPoll> threadPoll_;
 
-    HighWaterMarkCallback highWaterMarkCallback_;
+    //HighWaterMarkCallback highWaterMarkCallback_;
     ConnectionCallback connectionCallback_;
     MessageCallback messageCallback_;
     WriteCompleteCallback writeCompleteCallback_; // 消息发送完成的回掉

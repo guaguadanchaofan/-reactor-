@@ -79,7 +79,7 @@ void TcpConnection::handleRead(Timestamp reveiveTime)
         // 已经建立连接的用户，有可读事件发生了，调用用户传入的回调操作onMessage
         messageCallback_(shared_from_this(), &inputBuffer_, reveiveTime);
     }
-    else if (n = 0)
+    else if (n == 0)
     {
         handleClose();
     }
@@ -140,7 +140,7 @@ void TcpConnection::handleError()
 {
     int optval;
     socklen_t optlen = sizeof optval;
-    int err;
+    int err = 0;
     if (::getsockopt(channel_->fd(), SOL_SOCKET, SO_ERROR, &optval, &optlen) < 0)
     {
         err = errno;
@@ -174,7 +174,7 @@ void TcpConnection::sendInLoop(const void *data, size_t len)
     ssize_t remaining = len;
     bool faultError = false;
     // 之前调用过改Connection的shutdown，不能再发送了
-    if (state_ == kDisconnectiong)
+    if (state_ == kDisconnected)
     {
         LOG_ERROR("disconnection, give up writing!\n");
         return;
@@ -211,7 +211,7 @@ void TcpConnection::sendInLoop(const void *data, size_t len)
     if (!faultError && remaining > 0)
     {
         size_t oldlen = outputBuffer_.readableBytes(); // 剩余的待发送时数据的长度
-        if (oldlen + remaining > highWaterMark_ && oldlen < highWaterMark_ && highWaterMarkCallback_)
+        if (oldlen + remaining >= highWaterMark_ && oldlen < highWaterMark_ && highWaterMarkCallback_)
         {
             loop_->queueInloop(std::bind(highWaterMarkCallback_, shared_from_this(), oldlen + remaining));
         }

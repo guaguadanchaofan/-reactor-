@@ -1,6 +1,6 @@
 #include "Timestamp.h"
 #include<time.h>
-Timestamp::Timestamp(){}
+Timestamp::Timestamp():microSecondsSinceEpoch_(0){}
 
 Timestamp::Timestamp(int64_t microSecondsSinceEpoch)
 :microSecondsSinceEpoch_ (microSecondsSinceEpoch)

@@ -31,7 +31,7 @@ EventLoop::EventLoop()
       wakeupFd_(creatEventfd()),
       wakeupChannel_(new Channel(this, wakeupFd_))
 {
-    //LOG_DEBUG("EventLoop created %p int thread %d\n", this, threadId_);
+    LOG_DEBUG("EventLoop created %p int thread %d\n", this, threadId_);
     if (t_loopInThisThread)
     {
         LOG_FATAL("Another EventLoop %p exists int this thread %d\n", t_loopInThisThread, threadId_);
@@ -50,7 +50,7 @@ EventLoop::~EventLoop()
 {
     wakeupChannel_->disableAll();
     wakeupChannel_->remove();
-    close(wakeupFd_);
+    ::close(wakeupFd_);
     t_loopInThisThread = nullptr;
 }
 
@@ -62,6 +62,7 @@ void EventLoop::loop() // 开启事件循环
     while (!quit_)
     {
         activeChannels_.clear();
+        
         pollReturnTime_ = poller_->poll(kPollerTimeMs, &activeChannels_);
         for (Channel *channel : activeChannels_)
         {
