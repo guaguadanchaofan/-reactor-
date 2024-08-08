@@ -1,1 +1,1 @@
-/usr/bin/c++  -g -std=c++11 -fPIC -g CMakeFiles/echo.dir/EchoServer.cc.o -o ../bin/echo  -Wl,-rpath,/home/guagua/Desktop/work/network/lib ../lib/libmynet.so -lpthread 
+/usr/bin/c++   -std=c++11 -fPIC -O3 -DNDEBUG CMakeFiles/echo.dir/EchoServer.cc.o -o ../bin/echo  -Wl,-rpath,/home/guagua/Desktop/work/network/lib ../lib/libmynet.so -lpthread 

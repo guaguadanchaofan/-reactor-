@@ -2,6 +2,7 @@
 #include <string>
 #include "Logger.h"
 #include <functional>
+#include<iostream>
 class EchoServer
 {
 public:
@@ -16,7 +17,7 @@ public:
         server_.setMassageCallback(std::bind(&EchoServer::onMessage, this, std::placeholders::_1,
                                              std::placeholders::_2, std::placeholders::_3));
         // 设置合适的loop线程数量
-        server_.setThreadNum(3);
+        server_.setThreadNum(15);
     }
     void start()
     {
@@ -39,13 +40,16 @@ private:
     // 可读写事件回调
     void onMessage(const TcpConnectionPtr &conn, Buffer *buf, Timestamp time)
     {
-        std::string msg = buf->retrieveAllAsString();
-        std::cout<<msg.c_str()<<std::endl;
-        conn->send(msg);
-        //conn->shutdown(); // 写段关闭 EPOLLHUB -> closecallback——
+        //std::string msg = buf->retrieveAllAsString();
+        //std::cout<<msg.c_str()<<std::endl;
+        conn->send("OK");
+        count_++;
+        std::cout<<"============"<< count_ <<"============"<< std::endl;
+        conn->shutdown(); // 写段关闭 EPOLLHUB -> closecallback——
     }
     EventLoop *loop_;
     TcpServer server_;
+    long long count_ = 0;
 };
 
 int main()

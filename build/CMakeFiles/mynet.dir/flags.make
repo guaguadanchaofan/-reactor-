@@ -6,5 +6,5 @@ CXX_DEFINES = -Dmynet_EXPORTS
 
 CXX_INCLUDES = 
 
-CXX_FLAGS =  -g -std=c++11 -fPIC -g -fPIC
+CXX_FLAGS =   -std=c++11 -fPIC -O3 -DNDEBUG -fPIC
 

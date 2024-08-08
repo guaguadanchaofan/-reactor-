@@ -6,7 +6,7 @@
 			[
 				{
 					"build" : ".",
-					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"jsonFile" : "directory-.-Release-f5ebdc15457944623624.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.22.1"
@@ -20,7 +20,7 @@
 					]
 				}
 			],
-			"name" : "Debug",
+			"name" : "Release",
 			"projects" : 
 			[
 				{
@@ -41,14 +41,14 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "echo::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-echo-Debug-d395a497a499f34d05cf.json",
+					"jsonFile" : "target-echo-Release-b0f25f611274b177e4a8.json",
 					"name" : "echo",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "mynet::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-mynet-Debug-671c7c0e9a71011fdcd2.json",
+					"jsonFile" : "target-mynet-Release-e2396f58b0d8a71210ca.json",
 					"name" : "mynet",
 					"projectIndex" : 0
 				}
