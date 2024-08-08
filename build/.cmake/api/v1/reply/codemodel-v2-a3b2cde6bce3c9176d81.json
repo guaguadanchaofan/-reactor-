@@ -9,7 +9,7 @@
 					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
 					"minimumCMakeVersion" : 
 					{
-						"string" : "3.27.4"
+						"string" : "3.22.1"
 					},
 					"projectIndex" : 0,
 					"source" : ".",
@@ -41,14 +41,14 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "echo::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-echo-Debug-5651d3b935a75836e7cd.json",
+					"jsonFile" : "target-echo-Debug-d395a497a499f34d05cf.json",
 					"name" : "echo",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "mynet::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-mynet-Debug-a86b3006dafcf97912d5.json",
+					"jsonFile" : "target-mynet-Debug-671c7c0e9a71011fdcd2.json",
 					"name" : "mynet",
 					"projectIndex" : 0
 				}
@@ -58,12 +58,12 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/home/guagua/Desktop/reactor-server/build",
-		"source" : "/home/guagua/Desktop/reactor-server"
+		"build" : "/home/guagua/Desktop/work/network/build",
+		"source" : "/home/guagua/Desktop/work/network"
 	},
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 6
+		"minor" : 3
 	}
 }

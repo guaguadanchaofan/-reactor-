@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/guagua/Desktop/reactor-server/bin/echo"
-  "/home/guagua/Desktop/reactor-server/bin/echo.pdb"
+  "../bin/echo"
+  "../bin/echo.pdb"
   "CMakeFiles/echo.dir/EchoServer.cc.o"
   "CMakeFiles/echo.dir/EchoServer.cc.o.d"
 )

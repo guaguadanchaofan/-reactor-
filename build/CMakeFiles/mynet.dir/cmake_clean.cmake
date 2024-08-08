@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/guagua/Desktop/reactor-server/lib/libmynet.pdb"
-  "/home/guagua/Desktop/reactor-server/lib/libmynet.so"
+  "../lib/libmynet.pdb"
+  "../lib/libmynet.so"
   "CMakeFiles/mynet.dir/Acceprot.cc.o"
   "CMakeFiles/mynet.dir/Acceprot.cc.o.d"
   "CMakeFiles/mynet.dir/Buffer.cc.o"

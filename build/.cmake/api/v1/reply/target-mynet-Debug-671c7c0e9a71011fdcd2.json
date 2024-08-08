@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "/home/guagua/Desktop/reactor-server/lib/libmynet.so"
+			"path" : "/home/guagua/Desktop/work/network/lib/libmynet.so"
 		}
 	],
 	"backtrace" : 1,

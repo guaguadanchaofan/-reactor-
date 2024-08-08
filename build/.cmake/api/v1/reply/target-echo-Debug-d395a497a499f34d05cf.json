@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "/home/guagua/Desktop/reactor-server/bin/echo"
+			"path" : "/home/guagua/Desktop/work/network/bin/echo"
 		}
 	],
 	"backtrace" : 1,
@@ -73,12 +73,12 @@
 				"role" : "flags"
 			},
 			{
-				"fragment" : "-Wl,-rpath,/home/guagua/Desktop/reactor-server/lib",
+				"fragment" : "-Wl,-rpath,/home/guagua/Desktop/work/network/lib",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "/home/guagua/Desktop/reactor-server/lib/libmynet.so",
+				"fragment" : "../lib/libmynet.so",
 				"role" : "libraries"
 			},
 			{
