@@ -47,23 +47,25 @@ public:
     {
         readerIndex_ = wirteIndex_ = kChreapPrepend;
     }
+
     //把onmessage函数上报的Buffer数据，转成string类型的数据返回
     std::string retrieveAllAsString()
     {
         return retrieveAsstring(readableBytes());
     }
-    std::string retrieveAsstring(size_t len)
+
+    std::string retrieveAsstring(size_t len) //以字符串形式读取
     {
-        std::string result(peek(),len);
-        retrieve(len);
-        return result;
+        std::string result(peek(),len); //从读地址处 读len长度大小
+        retrieve(len);  //重置缓冲区大小
+        return result;  //返回读取到的数据
     }
 
-    void ensureWriteableBytes(size_t len)
+    void ensureWriteableBytes(size_t len) //确保缓冲区内存足够
     {
-        if(writeableBytes() < len)
+        if(writeableBytes() < len)  
         {
-            makeSpace(len);
+            makeSpace(len); //如果不够就扩容
         }
     }
     //把[data,data+len] 内存上的数据，添加到writeable缓冲区当中
@@ -85,11 +87,11 @@ public:
     ssize_t readFd(int fd , int * saveErrnp);
     ssize_t writeFd(int fd , int * saveErrnp);
 private:
-    void makeSpace(size_t len)
+    void makeSpace(size_t len) //扩容
     {
-        if(writeableBytes() + prependableBytes() < len + kChreapPrepend)
+        if(writeableBytes() + prependableBytes() < len + kChreapPrepend) //如果可写大小 小于对应长度
         {
-            buffer_.resize(wirteIndex_+len);
+            buffer_.resize(wirteIndex_+len); //扩容
         }
         else
         {

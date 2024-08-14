@@ -55,7 +55,7 @@ void TcpConnection::connectEstablished()
     channel_->tie(shared_from_this());
     channel_->enableReading(); // 注册channel的读事件
 
-    // 新连接建议，执行回调
+    // 新连建立，执行回调
     connectionCallback_(shared_from_this());
 }
 

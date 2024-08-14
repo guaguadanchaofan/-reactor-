@@ -43,7 +43,7 @@ EventLoop::EventLoop()
 
     // 设置wakeupfd的事件类型以及发生事件后的回调操作
     wakeupChannel_->setReadCallback(std::bind(&EventLoop::handleRead, this));
-    // 每一个eventloop都将监听wakeipchannel的epollin
+    // 每一个eventloop都将监听wakeupchannel的epollin
     wakeupChannel_->enableReading();
 }
 EventLoop::~EventLoop()

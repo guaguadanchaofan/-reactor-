@@ -41,14 +41,14 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "echo::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-echo-Release-b0f25f611274b177e4a8.json",
+					"jsonFile" : "target-echo-Release-08fa78d2410505b84b3c.json",
 					"name" : "echo",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "mynet::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-mynet-Release-e2396f58b0d8a71210ca.json",
+					"jsonFile" : "target-mynet-Release-1e4f9e100b575fb02dbd.json",
 					"name" : "mynet",
 					"projectIndex" : 0
 				}

@@ -23,15 +23,14 @@ ssize_t Buffer::readFd(int fd, int *saveErrnp)
     {
         *saveErrnp = errno;
     }
-    else if (n <= writeable)  //buffer 的可写缓冲区已经狗存储读出来的数据了
+    else if (n <= writeable)  //buffer 的可写缓冲区已经够存储读出来的数据了
     {
         wirteIndex_ += n;
     }
-    else // extrabuf里面也写入了数据
+    else //extrabuf里面也写入了数据
     {
         wirteIndex_ = buffer_.size();
         append(extrabuf, n - writeable); //writeIndex_开始写 n-writeabke大小的数据
-
     }
     return n;
 }
